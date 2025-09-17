@@ -1,0 +1,43 @@
+[build-system]
+requires = ["setuptools>=61.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nativelib"
+version = "0.0.1"
+description = "Library for read and write clickhouse native format."
+readme = "README.md"
+requires-python = ">=3.8"
+license = {file = "LICENSE"}
+authors = [
+    {name = "0xMihalich", email = "bayanmobile87@gmail.com"},
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "backports.zoneinfo==0.2.1; python_version < '3.9'",
+    "pgpack==0.1.3.1",
+    "pgcopylib==0.1.3",
+    "pandas>=2.1.0",
+    "polars>=0.20.31",
+]
+
+[project.urls]
+Homepage = "https://github.com/0xMihalich/nativelib"
+Documentation = "https://github.com/0xMihalich/nativelib#readme"
+Repository = "https://github.com/0xMihalich/nativelib"
+Changelog = "https://github.com/0xMihalich/nativelib/blob/main/CHANGELOG.md"
+
+[tool.setuptools]
+packages = {find = {where = ["src"]}}
+package-dir = {"" = "src"}
+
+[tool.setuptools.package-data]
+nativelib = ["*.md", "*.txt"]
