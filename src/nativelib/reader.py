@@ -52,7 +52,6 @@ class NativeReader:
     def init_first_block(self) -> None:
         """Read first block to make pgtypes."""
 
-        self.fileobj.seek(0)
         self.block.read_block()
         self.pgtypes = [
             PGOid(OidToArray[DTypeToOid[column.info.dtype.name]])
