@@ -123,7 +123,7 @@ class DType:
         if self.is_nullable:
             self.file.seek(self.file.tell() + self.total_rows)
 
-        if self.length != -1:
+        if self.length is not None:
             self.file.seek(
                 self.file.tell() + (self.length * self.total_rows)
             )
