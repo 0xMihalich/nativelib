@@ -1,15 +1,14 @@
-from io import BufferedWriter
-from typing import Any
+from collections.abc import Generator
+from typing import Any, Iterable
 
-from pgpack import PGPackReader
 from pandas import DataFrame as PdFrame
 from polars import DataFrame as PlFrame
 
-from .block import (
+from .common import (
     BlockWriter,
+    Column,
     DEFAULT_BLOCK_SIZE,
 )
-from .column import Column
 
 
 class NativeWriter:
@@ -17,111 +16,45 @@ class NativeWriter:
 
     def __init__(
         self,
-        fileobj: BufferedWriter,
-        column_list: list[Column] = [],
+        column_list: list[Column],
         block_size: int = DEFAULT_BLOCK_SIZE,
     ) -> None:
         """Class initialization."""
 
-        self.fileobj = fileobj
         self.column_list = column_list
         self.block_size = block_size
-        self.block: BlockWriter | None = None
+        self.block_writer = BlockWriter(column_list, block_size)
         self.total_blocks = 0
         self.total_rows = 0
 
-        if self.column_list:
-            self.block = BlockWriter(
-                file=self.fileobj,
-                column_list=self.column_list,
-                max_block_size=self.block_size,
-            )
-
-    def block_from_describe(
-        self,
-        describe_response: str,
-    ) -> None:
-        """Init block writer from describe table response."""
-
-        self.block = BlockWriter.from_describe(
-            file=self.fileobj,
-            describe_response=describe_response,
-            max_block_size=self.block_size,
-        )
-        self.column_list = self.block.column_list
-
-    def block_from_metadata(
-        self,
-        metadata: bytes,
-    ) -> None:
-        """Init block writer from metadata."""
-
-        self.block = BlockWriter.from_metadata(
-            file=self.fileobj,
-            metadata=metadata,
-            max_block_size=self.block_size,
-        )
-        self.column_list = self.block.column_list
-
-    def block_from_pgpack(
-        self,
-        pgpack: PGPackReader,
-        not_null: bool = False,
-    ) -> None:
-        """Init block writer from pgpack object."""
-
-        self.block = BlockWriter.from_pgpack(
-            file=self.fileobj,
-            pgpack=pgpack,
-            max_block_size=self.block_size,
-            not_null=not_null,
-        )
-        self.column_list = self.block.column_list
-
-    def from_pgpack(
-        self,
-        pgpack: PGPackReader,
-        not_null: bool = False,
-    ) -> None:
-        """Convert pgpack to native format."""
-
-        self.block_from_pgpack(pgpack, not_null)
-        self.from_rows(pgpack.pgcopy.read_raws())
-
     def from_rows(
         self,
-        *dtype_data: list[Any],
-    ) -> None:
+        dtype_data: Iterable[Any],
+    ) -> Generator[bytes, None, None]:
         """Convert python rows to native format."""
 
-        if not self.block:
-            raise ModuleNotFoundError("Native block not defined.")
+        self.block_writer.init_dataset(dtype_data)
 
-        for is_full in self.block.write_rows(*dtype_data):
-            self.total_rows += 1
-            if is_full:
-                self.block.finalize()
-                self.total_blocks += 1
-
-        if self.block.total_rows > 0:
-            self.block.finalize()
+        for block, total_rows in self.block_writer.write():
+            self.total_rows += total_rows
             self.total_blocks += 1
+            yield block
 
     def from_pandas(
         self,
         data_frame: PdFrame,
-    ) -> None:
+    ) -> Generator[bytes, None, None]:
         """Convert pandas.DataFrame to native format."""
 
-        self.from_rows(*data_frame.values)
+        return self.from_rows(iter(data_frame.values))
 
     def from_polars(
         self,
         data_frame: PlFrame,
-    ) -> None:
+    ) -> Generator[bytes, None, None]:
         """Convert polars.DataFrame to native format."""
 
-        self.from_rows(data_frame.iter_rows())
+        return self.from_rows(data_frame.iter_rows())
 
     def __repr__(self) -> str:
         """String representation in interpreter."""

@@ -16,7 +16,8 @@ You can use this format to quickly generate dumps that can only be read by the C
 It does not make sense to work with this format yourself.
 ```
 
-This library allows for data exchange between Clickhouse Native Format and pandas/polars DataFrame.
+This library allows for data exchange between Clickhouse Native Format
+and python/pandas.DataFrame/polars.DataFrame.
 
 ## Unsupported data types (at the moment)
 
@@ -44,36 +45,36 @@ This library allows for data exchange between Clickhouse Native Format and panda
 
 | Clickhouse data type  | Read   | Write  | Python data type (Read/Write)        |
 |:----------------------|:------:|:------:|:-------------------------------------|
-| UInt8                 | +      | +      | int/int                              |
-| UInt16                | +      | +      | int/int                              |
-| UInt32                | +      | +      | int/int                              |
-| UInt64                | +      | +      | int/int                              |
-| UInt128               | +      | +      | int/int                              |
-| UInt256               | +      | +      | int/int                              |
-| Int8                  | +      | +      | int/int                              |
-| Int16                 | +      | +      | int/int                              |
-| Int32                 | +      | +      | int/int                              |
-| Int64                 | +      | +      | int/int                              |
-| Int128                | +      | +      | int/int                              |
-| Int256                | +      | +      | int/int                              |
-| Float32               | +      | +      | float/float                          |
-| Float64               | +      | +      | float/float                          |
-| BFloat16              | +      | +      | float/float                          |
-| Decimal(P, S)         | +      | +      | decimal.Decimal/decimal.Decimal      |
-| String                | +      | +      | str/str                              |
-| FixedString(N)        | +      | +      | str/str                              |
-| Date                  | +      | +      | date/date                            |
-| Date32                | +      | +      | date/date                            |
-| DateTime              | +      | +      | datetime/datetime                    |
-| DateTime64            | +      | +      | datetime/datetime                    |
-| Enum                  | +      | +      | str/Union[int,Enum]                  |
-| Bool                  | +      | +      | bool/bool                            |
-| UUID                  | +      | +      | UUID/UUID                            |
-| IPv4                  | +      | +      | IPv4Address/IPv4Address              |
-| IPv6                  | +      | +      | IPv6Address/IPv6Address              |
-| Array(T)              | +      | +      | List[T*]/List[T*]                    |
-| LowCardinality(T)     | +      | -      | Union[str,date,datetime,int,float]/- |
-| Nullable(T)           | +      | +      | Optional[T*]/Optional[T*]            |
-| Nothing               | +      | +      | None/None                            |
+| UInt8                 | +      | +      | int                                  |
+| UInt16                | +      | +      | int                                  |
+| UInt32                | +      | +      | int                                  |
+| UInt64                | +      | +      | int                                  |
+| UInt128               | +      | +      | int                                  |
+| UInt256               | +      | +      | int                                  |
+| Int8                  | +      | +      | int                                  |
+| Int16                 | +      | +      | int                                  |
+| Int32                 | +      | +      | int                                  |
+| Int64                 | +      | +      | int                                  |
+| Int128                | +      | +      | int                                  |
+| Int256                | +      | +      | int                                  |
+| Float32               | +      | +      | float                                |
+| Float64               | +      | +      | float                                |
+| BFloat16              | +      | +      | float                                |
+| Decimal(P, S)         | +      | +      | decimal.Decimal                      |
+| String                | +      | +      | str                                  |
+| FixedString(N)        | +      | +      | str                                  |
+| Date                  | +      | +      | date                                 |
+| Date32                | +      | +      | date                                 |
+| DateTime              | +      | +      | datetime                             |
+| DateTime64            | +      | +      | datetime                             |
+| Enum                  | +      | +      | str/Union[int,Enum, str]             |
+| Bool                  | +      | +      | bool                                 |
+| UUID                  | +      | +      | UUID                                 |
+| IPv4                  | +      | +      | IPv4Address                          |
+| IPv6                  | +      | +      | IPv6Address                          |
+| Array(T)              | +      | +      | List[T*]                             |
+| LowCardinality(T)     | +      | +      | Union[str,date,datetime,int,float]   |
+| Nullable(T)           | +      | +      | Optional[T*]                         |
+| Nothing               | +      | +      | None                                 |
 
 *T - any simple data type from those listed in the table
