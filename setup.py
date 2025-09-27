@@ -96,6 +96,11 @@ setup(
         "nativelib.common.blocks",
     ],
     package_data={
-        "pgcopylib": ["*.pxd", "*.pyd", "*.md", "*.txt"]
+        "pgcopylib": [
+            "**/*.pyx", "**/*.pxd", "*.pxd", "*.pyd", "*.md", "*.txt",
+        ]
     },
+    include_package_data=True,
+    setup_requires=["Cython>=3.0"],
+    zip_safe=False,
 )

@@ -78,3 +78,23 @@ and python/pandas.DataFrame/polars.DataFrame.
 | Nothing               | +      | +      | None                                 |
 
 *T - any simple data type from those listed in the table
+
+## Installation
+
+From pip
+
+```bash
+pip install nativelib
+```
+
+From local directory
+
+```bash
+pip install .
+```
+
+From git
+
+```bash
+pip install git+https://github.com/0xMihalich/nativelib
+```

@@ -38,4 +38,4 @@ packages = {find = {where = ["src"]}}
 package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
-nativelib = ["*.pxd", "*.pyd", "*.md", "*.txt"]
+nativelib = ["**/*.pyx", "**/*.pxd", "*.pxd", "*.pyd", "*.md", "*.txt"]
