@@ -39,7 +39,6 @@ cpdef dict polars_schema(list column_list):
 
     for column_obj in column_list:
         name = column_obj.column
-
         pytype = column_obj.info.dtype.pytype
 
         if column_obj.info.is_array:

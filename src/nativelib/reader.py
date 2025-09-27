@@ -72,7 +72,7 @@ class NativeReader:
         return self.__str__()
 
     def __str__(self) -> str:
-        """String representation of NativeWriter."""
+        """String representation of NativeReader."""
 
         def to_col(text: str) -> str:
             """Format string element."""
