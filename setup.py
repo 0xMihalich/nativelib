@@ -96,9 +96,13 @@ setup(
         "nativelib.common.blocks",
     ],
     package_data={
-        "pgcopylib": [
+        "nativelib": [
             "**/*.pyx", "**/*.pxd", "*.pxd", "*.pyd", "*.md", "*.txt",
         ]
+    },
+    exclude_package_data={
+        "": ["*.c"],
+        "nativelib": ["**/*.c"],
     },
     include_package_data=True,
     setup_requires=["Cython>=3.0"],
