@@ -1,5 +1,11 @@
 # Version History
 
+## 0.2.0.1
+
+* Change Enum8/Enum16 pytype to str
+* Change dtype buffers from io.BytesIO objects to list
+* Improve Python data type section in README.md
+
 ## 0.2.0.0
 
 * Refactor project

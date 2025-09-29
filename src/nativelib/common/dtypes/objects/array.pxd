@@ -5,7 +5,8 @@ cdef class Array:
     cdef public str name
     cdef public unsigned long long total_rows
     cdef public list row_elements
-    cdef public object writable_buffer
+    cdef public list writable_buffer
+    cdef public unsigned long long pos
 
     cpdef void skip(self)
     cpdef list read(self)

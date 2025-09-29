@@ -1,5 +1,3 @@
-from io import BytesIO
-
 from nativelib.common.dtypes.functions.integers cimport (
     r_uint,
     w_uint,
@@ -22,7 +20,8 @@ cdef class Array:
         self.name = f"Array({dtype.name})"
         self.total_rows = total_rows
         self.row_elements = []
-        self.writable_buffer = BytesIO()
+        self.writable_buffer = []
+        self.pos = 0
 
     cpdef void skip(self):
         """Skip read native column."""
@@ -51,27 +50,28 @@ cdef class Array:
     cpdef unsigned long long write(self, object dtype_value):
         """Write array values into native column."""
 
-        cdef object array_element
-        cdef unsigned long long pos = 0
+        cdef object array_element, buffer_element
+        cdef unsigned long long pos = self.pos
 
         for array_element in dtype_value:
-            pos += self.dtype.write(array_element)
+            self.pos += self.dtype.write(array_element)
 
-        pos += self.writable_buffer.write(w_uint(self.dtype.total_rows, 8))
+        buffer_element = w_uint(self.dtype.total_rows, 8)
+        self.pos += 8
+        self.writable_buffer.append(buffer_element)
         self.total_rows += 1
-        return pos
+        return self.pos - pos
 
     cpdef unsigned long long tell(self):
         """Return size of write buffers."""
 
-        return self.writable_buffer.tell() + self.dtype.tell()
+        return self.pos
 
     cpdef bytes clear(self):
         """Get column data and clean buffers."""
 
-        cdef bytes data_bytes = self.writable_buffer.getvalue()
+        cdef bytes data_bytes = b"".join(self.writable_buffer)
         self.total_rows = 0
         self.row_elements.clear()
-        self.writable_buffer.seek(0)
-        self.writable_buffer.truncate()
+        self.writable_buffer.clear()
         return data_bytes + self.dtype.clear()

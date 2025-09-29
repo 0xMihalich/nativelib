@@ -1,5 +1,3 @@
-from io import BytesIO
-
 from nativelib.common.dtypes.functions.booleans cimport (
     read_bool,
     write_bool,
@@ -35,8 +33,8 @@ cdef class DType:
         self.enumcase = enumcase
         self.total_rows = total_rows
         self.nullable_map = []
-        self.nullable_buffer = BytesIO()
-        self.writable_buffer = BytesIO()
+        self.nullable_buffer = []
+        self.writable_buffer = []
         self.pos = 0
 
     cdef object read_dtype(self, int row):
@@ -67,19 +65,23 @@ cdef class DType:
     cdef void write_dtype(self, object dtype_value):
         """Write dtype value into native column."""
 
+        cdef bytes obj_value
+
         if self.is_nullable:
-            self.pos += self.nullable_buffer.write(
-                write_bool(dtype_value is None)
-            )
-        self.pos += self.writable_buffer.write(
-            self.dtype.write(
+            obj_value = write_bool(dtype_value is None)
+            self.pos += len(obj_value)
+            self.nullable_buffer.append(obj_value)
+
+        obj_value = self.dtype.write(
             dtype_value,
             self.length,
             self.precission,
             self.scale,
             self.tzinfo,
             self.enumcase,
-        ))
+        )
+        self.pos += len(obj_value)
+        self.writable_buffer.append(obj_value)
         self.total_rows += 1
 
     cpdef void skip(self):
@@ -124,17 +126,11 @@ cdef class DType:
     cpdef bytes clear(self):
         """Get column data and clean buffers."""
 
-        cdef object _buffer
-        cdef list data_bytes = []
-
-        for _buffer in (
-            self.nullable_buffer,
-            self.writable_buffer,
-        ):
-            data_bytes.append(_buffer.getvalue())
-            _buffer.seek(0)
-            _buffer.truncate()
-
+        cdef bytes data_bytes
+        self.nullable_buffer.extend(self.writable_buffer)
+        data_bytes = b"".join(self.nullable_buffer)
+        self.nullable_buffer.clear()
+        self.writable_buffer.clear()
         self.total_rows = 0
         self.pos = 0
-        return b"".join(data_bytes)
+        return data_bytes

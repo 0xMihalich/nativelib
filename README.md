@@ -43,39 +43,39 @@ and python/pandas.DataFrame/polars.DataFrame.
 
 ## Supported data types
 
-| Clickhouse data type  | Read   | Write  | Python data type (Read/Write)        |
-|:----------------------|:------:|:------:|:-------------------------------------|
-| UInt8                 | +      | +      | int                                  |
-| UInt16                | +      | +      | int                                  |
-| UInt32                | +      | +      | int                                  |
-| UInt64                | +      | +      | int                                  |
-| UInt128               | +      | +      | int                                  |
-| UInt256               | +      | +      | int                                  |
-| Int8                  | +      | +      | int                                  |
-| Int16                 | +      | +      | int                                  |
-| Int32                 | +      | +      | int                                  |
-| Int64                 | +      | +      | int                                  |
-| Int128                | +      | +      | int                                  |
-| Int256                | +      | +      | int                                  |
-| Float32               | +      | +      | float                                |
-| Float64               | +      | +      | float                                |
-| BFloat16              | +      | +      | float                                |
-| Decimal(P, S)         | +      | +      | decimal.Decimal                      |
-| String                | +      | +      | str                                  |
-| FixedString(N)        | +      | +      | str                                  |
-| Date                  | +      | +      | date                                 |
-| Date32                | +      | +      | date                                 |
-| DateTime              | +      | +      | datetime                             |
-| DateTime64            | +      | +      | datetime                             |
-| Enum                  | +      | +      | str/Union[int,Enum, str]             |
-| Bool                  | +      | +      | bool                                 |
-| UUID                  | +      | +      | UUID                                 |
-| IPv4                  | +      | +      | IPv4Address                          |
-| IPv6                  | +      | +      | IPv6Address                          |
-| Array(T)              | +      | +      | List[T*]                             |
-| LowCardinality(T)     | +      | +      | Union[str,date,datetime,int,float]   |
-| Nullable(T)           | +      | +      | Optional[T*]                         |
-| Nothing               | +      | +      | None                                 |
+| Clickhouse data type  | Read   | Write  | Python data type (Read/Write)      |
+|:----------------------|:------:|:------:|:-----------------------------------|
+| UInt8                 | +      | +      | int                                |
+| UInt16                | +      | +      | int                                |
+| UInt32                | +      | +      | int                                |
+| UInt64                | +      | +      | int                                |
+| UInt128               | +      | +      | int                                |
+| UInt256               | +      | +      | int                                |
+| Int8                  | +      | +      | int                                |
+| Int16                 | +      | +      | int                                |
+| Int32                 | +      | +      | int                                |
+| Int64                 | +      | +      | int                                |
+| Int128                | +      | +      | int                                |
+| Int256                | +      | +      | int                                |
+| Float32               | +      | +      | float                              |
+| Float64               | +      | +      | float                              |
+| BFloat16              | +      | +      | float                              |
+| Decimal(P, S)         | +      | +      | decimal.Decimal                    |
+| String                | +      | +      | str                                |
+| FixedString(N)        | +      | +      | str                                |
+| Date                  | +      | +      | datetime.date                      |
+| Date32                | +      | +      | datetime.date                      |
+| DateTime              | +      | +      | datetime.datetime                  |
+| DateTime64            | +      | +      | datetime.datetime                  |
+| Enum                  | +      | +      | str/Union[int, enum.Enum, str]     |
+| Bool                  | +      | +      | bool                               |
+| UUID                  | +      | +      | uuid.UUID                          |
+| IPv4                  | +      | +      | ipaddress.IPv4Address              |
+| IPv6                  | +      | +      | ipaddress.IPv6Address              |
+| Array(T)              | +      | +      | list[T*]                           |
+| LowCardinality(T)     | +      | +      | Union[str,date,datetime,int,float] |
+| Nullable(T)           | +      | +      | Optional[T*]                       |
+| Nothing               | +      | +      | None                               |
 
 *T - any simple data type from those listed in the table
 

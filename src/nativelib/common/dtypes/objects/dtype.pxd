@@ -11,8 +11,8 @@ cdef class DType:
     cdef public object enumcase
     cdef public unsigned long long total_rows
     cdef public list nullable_map
-    cdef public object nullable_buffer
-    cdef public object writable_buffer
+    cdef public list nullable_buffer
+    cdef public list writable_buffer
     cdef public unsigned long long pos
 
     cdef object read_dtype(self, int row)
