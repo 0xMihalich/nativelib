@@ -1,5 +1,12 @@
 # Version History
 
+## 0.2.0.2
+
+* Improve pandas.Timestamp write errors for date & datetime write functions
+* Add date to datetime & datetime to date convert
+* Refactor PANDAS_TYPE ditionary
+* Fix pandas.DataFrame string dtype from object to string[python]
+
 ## 0.2.0.1
 
 * Change Enum8/Enum16 pytype to str

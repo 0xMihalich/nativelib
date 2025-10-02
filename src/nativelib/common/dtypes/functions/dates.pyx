@@ -15,6 +15,8 @@ try:
 except ImportError:
     from backports.zoneinfo import ZoneInfo
 
+from pandas import Timestamp
+
 
 cdef object DEFAULTDATE = datetime(1970, 1, 1, tzinfo=timezone.utc)
 cdef object DEFAULTDATE_NAIVE = datetime(1970, 1, 1)
@@ -30,6 +32,12 @@ cdef object unpack_date(long days):
 cdef long pack_date(object dateobj):
     """Pack date into integer."""
 
+    if dateobj.__class__ in (
+        datetime,
+        Timestamp,
+    ):
+        dateobj = dateobj.date()
+
     cdef object current_date = dateobj - DEFAULTDATE.date()
     return current_date.days
 
@@ -42,6 +50,11 @@ cdef object unpack_datetime(object seconds):
 
 cdef object pack_datetime(object datetimeobj):
     """Pack datetime into count seconds or ticks."""
+
+    if datetimeobj.__class__ is Timestamp:
+        datetimeobj = datetimeobj.to_pydatetime()
+    elif datetimeobj.__class__ is date:
+        datetimeobj = datetime.combine(datetimeobj, datetime.min.time())
 
     cdef object current_datetime
 

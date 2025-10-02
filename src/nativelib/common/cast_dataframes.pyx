@@ -13,18 +13,13 @@ from uuid import UUID
 
 
 cdef dict PANDAS_TYPE = {
-    Decimal: "O",
-    Enum: "O",
-    IPv4Address: "O",
-    IPv6Address: "O",
     NoneType: "nan",
-    UUID: "O",
     bool: "?",
     date: "datetime64[ns]",
     datetime: "datetime64[ns]",
     float: "float64",
     int: "int64",
-    str: "str",
+    str: "string",
 }
 
 
