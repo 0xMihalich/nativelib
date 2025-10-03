@@ -1,5 +1,11 @@
 # Version History
 
+## 0.2.0.3
+
+* Add MIT License
+* Add MANIFEST.in
+* Delete tests directory. I'll adding some autotests later
+
 ## 0.2.0.2
 
 * Improve pandas.Timestamp write errors for date & datetime write functions

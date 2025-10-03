@@ -97,7 +97,7 @@ setup(
     ],
     package_data={
         "nativelib": [
-            "**/*.pyx", "**/*.pxd", "*.pxd", "*.pyd", "*.md", "*.txt",
+            "**/*.pyx", "**/*.pxd", "*.pyx", "*.pxd", "*.md", "*.txt",
         ]
     },
     exclude_package_data={

@@ -1,0 +1,16 @@
+include src/nativelib/common/*.pyx
+include src/nativelib/common/*.pxd
+recursive-include src/nativelib *.pyx
+recursive-include src/nativelib *.pxd
+
+exclude src/nativelib/common/*.c
+recursive-exclude src/nativelib *.c
+
+exclude *.c
+exclude *.pyd
+exclude src/*.c
+exclude src/*.pyd
+exclude src/**/*.c
+exclude src/**/*.pyd
+global-exclude *.c
+global-exclude *.pyd
