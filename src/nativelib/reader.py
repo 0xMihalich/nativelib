@@ -66,6 +66,16 @@ class NativeReader:
             schema=self.block_reader.columns,
         ).cast(polars_schema(self.block_reader.column_list))
 
+    def tell(self) -> int:
+        """Return current position."""
+
+        return self.fileobj.tell()
+
+    def close(self) -> None:
+        """Close file object."""
+
+        self.fileobj.close()
+
     def __repr__(self) -> str:
         """String representation in interpreter."""
 

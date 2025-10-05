@@ -1,5 +1,12 @@
 # Version History
 
+## 0.2.0.4
+
+* Update MANIFEST.in
+* Improve pyproject.toml license file approve
+* Add CHANGELOG.md to pip package
+* Add close() & tell() method to NativeReader
+
 ## 0.2.0.3
 
 * Add MIT License

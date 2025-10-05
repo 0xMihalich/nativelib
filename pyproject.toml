@@ -4,11 +4,11 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "nativelib"
-version = "0.2.0.3"
+version = "0.2.0.4"
 description = "Library for read and write clickhouse native format."
 readme = "README.md"
 requires-python = ">=3.8"
-license = {file = "LICENSE"}
+license-files = ["LICENSE"]
 authors = [
     {name = "0xMihalich", email = "bayanmobile87@gmail.com"},
 ]
