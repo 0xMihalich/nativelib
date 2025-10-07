@@ -1,4 +1,4 @@
-cpdef int read_int(
+cpdef Py_ssize_t read_int(
     object fileobj,
     int length,
     object precission,
@@ -13,7 +13,7 @@ cpdef int read_int(
 
 
 cpdef bytes write_int(
-    int dtype_value,
+    object dtype_value,
     int length,
     object precission,
     object scale,
@@ -25,10 +25,11 @@ cpdef bytes write_int(
     if dtype_value is None:
         return bytes(length)
 
-    return dtype_value.to_bytes(length, "little", signed=True)
+    cdef Py_ssize_t int_value = <Py_ssize_t>dtype_value
+    return int_value.to_bytes(length, "little", signed=True)
 
 
-cpdef int read_uint(
+cpdef Py_ssize_t read_uint(
     object fileobj,
     int length,
     object precission = None,
@@ -43,7 +44,7 @@ cpdef int read_uint(
 
 
 cpdef bytes write_uint(
-    unsigned int dtype_value,
+    object dtype_value,
     int length,
     object precission = None,
     object scale = None,
@@ -55,7 +56,8 @@ cpdef bytes write_uint(
     if dtype_value is None:
         return bytes(length)
 
-    return dtype_value.to_bytes(length, "little", signed=False)
+    cdef Py_ssize_t int_value = <Py_ssize_t>dtype_value
+    return int_value.to_bytes(length, "little", signed=False)
 
 
 cdef unsigned long long r_uint(object fileobj, unsigned char length):

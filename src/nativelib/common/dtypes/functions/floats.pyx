@@ -33,14 +33,14 @@ cpdef float read_bfloat16(
     bfloat16 = fileobj.read(2)
     bits_int = (<unsigned char>bfloat16[1] << 8) | <unsigned char>bfloat16[0]
     sign = 1 if (bits_int & 0x8000) == 0 else -1
-    exponent_int = (bits_int >> 7) & 0xFF
-    mantissa = bits_int & 0x7F
+    exponent_int = (bits_int >> 7) & 0xff
+    mantissa = bits_int & 0x7f
 
     if exponent_int == 0:
         if mantissa == 0:
             return 0.0
         return sign * (mantissa / 128.0) * pow(2, -126)
-    if exponent_int == 0xFF:
+    if exponent_int == 0xff:
         if mantissa == 0:
             return sign * float('inf')
         return float('nan')
@@ -67,18 +67,18 @@ cpdef bytes write_bfloat16(
     cdef uint32_t float_bits
     cdef uint16_t bfloat16_bits
 
-    float_bytes = pack('f', dtype_value)
+    float_bytes = pack('f', <float>dtype_value)
     float_bits = (<unsigned char>float_bytes[3] << 24) | \
                  (<unsigned char>float_bytes[2] << 16) | \
                  (<unsigned char>float_bytes[1] << 8) | \
                  <unsigned char>float_bytes[0]
-    bfloat16_bits = (float_bits >> 16) & 0xFFFF
+    bfloat16_bits = (float_bits >> 16) & 0xffff
 
-    if (bfloat16_bits & 0x7FFF) == 0x7F80:
+    if (bfloat16_bits & 0x7fff) == 0x7F80:
         if bfloat16_bits & 0x8000:
             return b'\xFF\xFF'
         return b'\x7F\x80'
-    if (bfloat16_bits & 0x7FFF) > 0x7F80:
+    if (bfloat16_bits & 0x7fff) > 0x7F80:
         return b'\x7F\xFF'
 
     return bfloat16_bits.to_bytes(2, 'little')
@@ -113,4 +113,4 @@ cpdef bytes write_float(
         return bytes(length)
 
     cdef str struct_string = FloatStructValue[length]
-    return pack(struct_string, dtype_value)
+    return pack(struct_string, <double>dtype_value)

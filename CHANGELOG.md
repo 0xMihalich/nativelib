@@ -1,5 +1,11 @@
 # Version History
 
+## 0.2.0.5
+
+* Fix ClickhouseDtype polars compatible types
+* Add cast data types to integers functions
+* Add cast data types to floats functions
+
 ## 0.2.0.4
 
 * Update MANIFEST.in

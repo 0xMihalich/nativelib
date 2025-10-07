@@ -5,7 +5,6 @@ from datetime import (
     date,
     datetime as dt,
 )
-from decimal import Decimal
 from enum import Enum
 from ipaddress import (
     IPv4Address,
@@ -16,7 +15,6 @@ from types import (
     NoneType,
 )
 from typing import NamedTuple
-from uuid import UUID
 
 from .functions import (
     read_bool,
@@ -72,7 +70,7 @@ class ClickhouseDtype(DTypeFunc, Enum):
     Date32 = DTypeFunc("Date32", date, read_date32, write_date32)
     DateTime = DTypeFunc("DateTime", dt, read_datetime, write_datetime)
     DateTime64 = DTypeFunc("DateTime64", dt, read_datetime64, write_datetime64)
-    Decimal = DTypeFunc("Decimal", Decimal, read_decimal, write_decimal)
+    Decimal = DTypeFunc("Decimal", object, read_decimal, write_decimal)
     Enum8 = DTypeFunc("Enum8", str, read_enum, write_enum)
     Enum16 = DTypeFunc("Enum16", str, read_enum, write_enum)
     FixedString = DTypeFunc("FixedString", str, read_string, write_string)
@@ -95,4 +93,4 @@ class ClickhouseDtype(DTypeFunc, Enum):
     UInt32 = DTypeFunc("UInt32", int, read_uint, write_uint)
     UInt64 = DTypeFunc("UInt64", int, read_uint, write_uint)
     UInt8 = DTypeFunc("UInt8", int, read_uint, write_uint)
-    UUID = DTypeFunc("UUID", UUID, read_uuid, write_uuid)
+    UUID = DTypeFunc("UUID", object, read_uuid, write_uuid)
