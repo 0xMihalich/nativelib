@@ -4,10 +4,7 @@ from .blocks import (
     BlockReader,
     BlockWriter,
 )
-from .cast_dataframes import (
-    pandas_astype,
-    polars_schema,
-)
+from .cast_dataframes import pandas_astype
 from .columns import (
     Column,
     ColumnInfo,
@@ -32,5 +29,4 @@ __all__ = (
     "LowCardinality",
     "DEFAULT_BLOCK_SIZE",
     "pandas_astype",
-    "polars_schema",
 )

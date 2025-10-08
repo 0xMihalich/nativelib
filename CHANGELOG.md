@@ -1,5 +1,11 @@
 # Version History
 
+## 0.2.0.6
+
+* Fix write datetime function
+* Fix datetime cast to pandas.DataFrame
+* Delete polars_schema its interferes with correct operation to_polars() method
+
 ## 0.2.0.5
 
 * Fix ClickhouseDtype polars compatible types

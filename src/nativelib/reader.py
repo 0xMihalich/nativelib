@@ -10,7 +10,6 @@ from polars import DataFrame as PlFrame
 from .common import (
     BlockReader,
     pandas_astype,
-    polars_schema,
 )
 
 
@@ -64,7 +63,7 @@ class NativeReader:
         return PlFrame(
             self.to_rows(),
             schema=self.block_reader.columns,
-        ).cast(polars_schema(self.block_reader.column_list))
+        )
 
     def tell(self) -> int:
         """Return current position."""

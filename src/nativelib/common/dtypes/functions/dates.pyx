@@ -168,13 +168,13 @@ cpdef bytes write_datetime(
     if dtype_value is None:
         return bytes(4)
 
-    cdef long seconds = <long>pack_datetime(dtype_value)
+    cdef object seconds = pack_datetime(dtype_value)
 
     if seconds < 0:
         return bytes(4)
     if seconds > 0xffffffff:
         return b"\xff\xff\xff\xff"
-    return pack("<l", seconds)
+    return pack("<l", int(seconds))
 
 
 cpdef object read_datetime64(

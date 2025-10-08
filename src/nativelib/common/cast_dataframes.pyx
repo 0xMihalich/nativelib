@@ -16,21 +16,21 @@ cdef dict PANDAS_TYPE = {
     NoneType: "nan",
     bool: "?",
     date: "datetime64[ns]",
-    datetime: "datetime64[ns]",
+    datetime: "datetime64[ns, UTC]",
     float: "float64",
     int: "int64",
     str: "string",
 }
 
 
-cpdef dict polars_schema(list column_list):
-    """Make polars schema from columns."""
+cpdef dict pandas_astype(list column_list):
+    """Make pandas dtypes from columns."""
 
     cdef object column_obj
     cdef str name
     cdef object pytype
     cdef int _i
-    cdef dict schema = {}
+    cdef dict astype = {}
 
     for column_obj in column_list:
         name = column_obj.column
@@ -40,17 +40,6 @@ cpdef dict polars_schema(list column_list):
             for _i in range(column_obj.info.nested):
                 pytype = list[pytype]
 
-        schema[name] = pytype
-
-    return schema
-
-
-cpdef dict pandas_astype(list column_list):
-    """Make pandas dtypes from columns."""
-
-    cdef dict astype = polars_schema(column_list)
-
-    for name, pytype in astype.items():
         astype[name] = PANDAS_TYPE.get(pytype, "O")
 
     return astype
