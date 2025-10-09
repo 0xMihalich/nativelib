@@ -1,5 +1,9 @@
 # Version History
 
+## 0.2.0.7
+
+* Fix pandas_astype
+
 ## 0.2.0.6
 
 * Fix write datetime function

@@ -40,6 +40,6 @@ cpdef dict pandas_astype(list column_list):
             for _i in range(column_obj.info.nested):
                 pytype = list[pytype]
 
-        astype[name] = PANDAS_TYPE.get(pytype, "O")
+        astype[name] = PANDAS_TYPE.get(pytype)
 
     return astype
