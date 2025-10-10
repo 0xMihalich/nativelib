@@ -60,6 +60,8 @@ cdef class BlockWriter:
         self,
         object dtype_values,
     ):
+        """Init dataset."""
+
         self.data_iterator = iter(dtype_values)
         self.total_rows = 0
         self.block_size = 0

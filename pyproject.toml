@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools>=61.0", "wheel", "Cython>=3.0"]
+requires = ["setuptools>=80.9.0", "wheel", "Cython>=3.0"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "nativelib"
-version = "0.2.0.7"
+version = "0.2.1.0"
 description = "Library for read and write clickhouse native format."
 readme = "README.md"
 requires-python = ">=3.8"
@@ -38,4 +38,4 @@ packages = {find = {where = ["src"]}}
 package-dir = {"" = "src"}
 
 [tool.setuptools.package-data]
-nativelib = ["**/*.pyx", "**/*.pxd", "*.pyx", "*.pxd", "*.md", "*.txt"]
+nativelib = ["**/*.pyx", "**/*.pyi", "**/*.pxd", "*.pyx", "*.pxd", "*.md", "*.txt"]

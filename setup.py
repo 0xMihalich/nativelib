@@ -4,6 +4,7 @@ from setuptools import (
 )
 from Cython.Build import cythonize
 
+
 extensions = [
     Extension(
         "nativelib.common.cast_dataframes",
@@ -97,7 +98,14 @@ setup(
     ],
     package_data={
         "nativelib": [
-            "**/*.pyx", "**/*.pxd", "*.pyx", "*.pxd", "*.md", "*.txt",
+            "**/*.pyx",
+            "**/*.pyi",
+            "**/*.pxd",
+            "*.pyx",
+            "*.pyi",
+            "*.pxd",
+            "*.md",
+            "*.txt",
         ]
     },
     exclude_package_data={

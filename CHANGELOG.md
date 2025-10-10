@@ -1,5 +1,11 @@
 # Version History
 
+## 0.2.1.0
+
+* Add *.pyi files for cython modules descriptions
+* Update MANIFEST.in
+* Update depends setuptools==80.9.0
+
 ## 0.2.0.7
 
 * Fix pandas_astype
