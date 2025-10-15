@@ -1,0 +1,72 @@
+name: Build wheels and create release
+
+on:
+  push:
+    tags: ["v*"]
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build_wheels:
+    name: Build wheels
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        include:
+          - os: macos-latest
+            arches: "x86_64 arm64"
+          - os: ubuntu-latest
+            arches: "x86_64 aarch64"
+          - os: windows-latest
+            arches: "AMD64"
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install cibuildwheel
+      run: pip install git+https://github.com/pypa/cibuildwheel.git
+
+    - name: Build wheels
+      run: python -m cibuildwheel --output-dir wheel_prebuild
+      env:
+        CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
+        CIBW_SKIP: "pp38-* pp39-*"
+
+    - name: Upload wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: wheels-${{ matrix.os }}
+        path: wheel_prebuild/*.whl
+
+  create_release:
+    name: Create Release with wheels
+    runs-on: ubuntu-latest
+    needs: build_wheels
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: release_wheels
+
+    - name: List all wheels
+      run: find release_wheels -name "*.whl" | sort
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: release_wheels/**/*.whl
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
