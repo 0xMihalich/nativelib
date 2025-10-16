@@ -25,7 +25,7 @@ cpdef str read_string(
         return ""
 
     cdef bytes string = fileobj.read(string_length)
-    return string.decode("utf-8")
+    return string.decode("utf-8", errors="replace")
 
 
 cpdef bytes write_string(
@@ -44,7 +44,7 @@ cpdef bytes write_string(
     if dtype_value is None:
         string = b""
     else:
-        string = dtype_value.encode("utf-8")
+        string = str(dtype_value).encode("utf-8")
 
     if length is None:
         string_length = len(string)

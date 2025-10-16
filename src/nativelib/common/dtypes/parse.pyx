@@ -2,7 +2,6 @@ from ast import literal_eval
 from re import (
     findall,
     match,
-    Match,
 )
 
 from nativelib.common.dtypes.dtype import ClickhouseDtype

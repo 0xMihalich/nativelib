@@ -2,14 +2,7 @@ from datetime import (
     date,
     datetime,
 )
-from decimal import Decimal
-from enum import Enum
-from ipaddress import (
-    IPv4Address,
-    IPv6Address,
-)
 from types import NoneType
-from uuid import UUID
 
 
 cdef dict PANDAS_TYPE = {

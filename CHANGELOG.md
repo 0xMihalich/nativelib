@@ -1,5 +1,11 @@
 # Version History
 
+## 0.2.1.1
+
+* Add wheels automake
+* Delete unused imports
+* Improve strings functions
+
 ## 0.2.1.0
 
 * Add *.pyi files for cython modules descriptions
