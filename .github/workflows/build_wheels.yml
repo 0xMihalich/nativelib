@@ -1,0 +1,166 @@
+name: Build wheels and create release
+
+on:
+  release:
+    types: [published]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build_linux_x86_64:
+    name: Build Linux x86_64 wheels
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install cibuildwheel
+      run: pip install cibuildwheel
+
+    - name: Install ONLY cibuildwheel dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install cython setuptools wheel
+      shell: bash
+
+    - name: Build Linux x86_64 wheels
+      run: python -m cibuildwheel --output-dir wheel_prebuild --platform linux
+      env:
+        CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
+        CIBW_ARCHS_LINUX: "x86_64"
+        CIBW_SKIP: "*-musllinux*"
+
+    - name: Upload Linux x86_64 wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-x86_64-wheels
+        path: wheel_prebuild/*.whl
+
+  build_linux_aarch64:
+    name: Build Linux aarch64 wheels
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install cibuildwheel
+      run: pip install cibuildwheel
+
+    - name: Install ONLY cibuildwheel dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install cython setuptools wheel
+      shell: bash
+
+    - name: Set up QEMU for ARM emulation
+      uses: docker/setup-qemu-action@v3
+      with:
+        platforms: arm64
+
+    - name: Build Linux aarch64 wheels
+      run: python -m cibuildwheel --output-dir wheel_prebuild --platform linux
+      env:
+        CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
+        CIBW_ARCHS_LINUX: "aarch64"
+        CIBW_SKIP: "*-musllinux*"
+
+    - name: Upload Linux aarch64 wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: linux-aarch64-wheels
+        path: wheel_prebuild/*.whl
+
+  build_windows:
+    name: Build Windows wheels
+    runs-on: windows-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install cibuildwheel
+      run: pip install cibuildwheel
+
+    - name: Build Windows wheels
+      run: python -m cibuildwheel --output-dir wheel_prebuild --platform windows
+      env:
+        CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
+        CIBW_ARCHS_WINDOWS: "AMD64"
+        CIBW_SKIP: "*-win32"
+
+    - name: Upload Windows wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: windows-wheels
+        path: wheel_prebuild/*.whl
+
+  build_macos:
+    name: Build macOS wheels
+    runs-on: macos-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+
+    - name: Install cibuildwheel
+      run: pip install cibuildwheel
+
+    - name: Build macOS wheels
+      run: python -m cibuildwheel --output-dir wheel_prebuild --platform macos
+      env:
+        CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-*"
+        CIBW_ARCHS_MACOS: "x86_64 arm64"
+        MACOSX_DEPLOYMENT_TARGET: "10.14"
+
+    - name: Upload macOS wheels
+      uses: actions/upload-artifact@v4
+      with:
+        name: macos-wheels
+        path: wheel_prebuild/*.whl
+
+  create_release:
+    name: Create Release with wheels
+    runs-on: ubuntu-latest
+    needs: [build_linux_x86_64, build_linux_aarch64, build_windows, build_macos]
+    if: startsWith(github.ref, 'refs/tags/')
+    
+    steps:
+    - name: Download all artifacts
+      uses: actions/download-artifact@v4
+      with:
+        path: release_wheels
+
+    - name: List all wheels
+      run: find release_wheels -name "*.whl" | sort
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      with:
+        files: release_wheels/**/*.whl
+        generate_release_notes: true
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
