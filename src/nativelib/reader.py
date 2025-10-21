@@ -63,6 +63,7 @@ class NativeReader:
         return PlFrame(
             self.to_rows(),
             schema=self.block_reader.columns,
+            infer_schema_length=None,
         )
 
     def tell(self) -> int:

@@ -11,7 +11,6 @@ cdef dict PANDAS_TYPE = {
     date: "datetime64[ns]",
     datetime: "datetime64[ns, UTC]",
     float: "float64",
-    int: "int64",
     str: "string",
 }
 

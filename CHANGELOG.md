@@ -1,5 +1,10 @@
 # Version History
 
+## 0.2.1.3
+
+* Fixed conversion to pandas for null values ​​in int columns
+* Fixed an issue with converting to polars for large numeric values
+
 ## 0.2.1.2
 
 * Update python version support to 3.10-3.14
