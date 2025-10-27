@@ -7,7 +7,7 @@ def from_dtype(
     is_lowcardinality: bool = False,
     is_nullable: bool = False,
     length: int | None = None,
-    precission: int | None = None,
+    precision: int | None = None,
     scale: int | None = None,
     tzinfo: str | None = None,
     enumcase: dict[int, str] | None = None,

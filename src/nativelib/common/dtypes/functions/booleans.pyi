@@ -5,7 +5,7 @@ from types import NoneType
 def read_bool(
     fileobj: BufferedReader,
     length: int | None = None,
-    precission: int | None = None,
+    precision: int | None = None,
     scale: int | None = None,
     tzinfo: str | None = None,
     enumcase: dict[int, str] | None = None,
@@ -18,7 +18,7 @@ def read_bool(
 def write_bool(
     dtype_value: bool,
     length: int | None = None,
-    precission: int | None = None,
+    precision: int | None = None,
     scale: int | None = None,
     tzinfo: str | None = None,
     enumcase: dict[int, str] | None = None,
@@ -31,7 +31,7 @@ def write_bool(
 def read_nothing(
     fileobj: BufferedReader,
     length: int | None = None,
-    precission: int | None = None,
+    precision: int | None = None,
     scale: int | None = None,
     tzinfo: str | None = None,
     enumcase: dict[int, str] | None = None,
@@ -44,7 +44,7 @@ def read_nothing(
 def write_nothing(
     dtype_value: NoneType,
     length: int | None = None,
-    precission: int | None = None,
+    precision: int | None = None,
     scale: int | None = None,
     tzinfo: str | None = None,
     enumcase: dict[int, str] | None = None,

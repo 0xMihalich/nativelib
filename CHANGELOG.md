@@ -1,5 +1,12 @@
 # Version History
 
+## 0.2.2.0
+
+* Add Time function
+* Add Time64 function
+* Refactor variable precission -> precision
+* Update README.md
+
 ## 0.2.1.3
 
 * Fixed conversion to pandas for null values ​​in int columns

@@ -1,7 +1,7 @@
 cpdef str read_string(
     object fileobj,
     object length=*,
-    object precission=*,
+    object precision=*,
     object scale=*,
     object tzinfo=*,
     object enumcase=*,
@@ -9,7 +9,7 @@ cpdef str read_string(
 cpdef bytes write_string(
     object dtype_value,
     object length=*,
-    object precission=*,
+    object precision=*,
     object scale=*,
     object tzinfo=*,
     object enumcase=*,

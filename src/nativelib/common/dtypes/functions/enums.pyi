@@ -5,7 +5,7 @@ from io import BufferedReader
 def read_enum(
     fileobj: BufferedReader,
     length: int,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -18,7 +18,7 @@ def read_enum(
 def write_enum(
     dtype_value: int | str | Enum,
     length: int,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,

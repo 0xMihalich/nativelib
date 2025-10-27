@@ -1,7 +1,7 @@
 cpdef Py_ssize_t read_int(
     object fileobj,
     int length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     object enumcase,
@@ -15,7 +15,7 @@ cpdef Py_ssize_t read_int(
 cpdef bytes write_int(
     object dtype_value,
     int length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     object enumcase,
@@ -32,7 +32,7 @@ cpdef bytes write_int(
 cpdef Py_ssize_t read_uint(
     object fileobj,
     int length,
-    object precission = None,
+    object precision = None,
     object scale = None,
     object tzinfo = None,
     object enumcase = None,
@@ -46,7 +46,7 @@ cpdef Py_ssize_t read_uint(
 cpdef bytes write_uint(
     object dtype_value,
     int length,
-    object precission = None,
+    object precision = None,
     object scale = None,
     object tzinfo = None,
     object enumcase = None,

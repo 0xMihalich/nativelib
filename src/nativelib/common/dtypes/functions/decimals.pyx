@@ -14,16 +14,16 @@ from libc.math cimport pow
 from decimal import Decimal
 
 
-cdef unsigned char find_length(unsigned char precission):
+cdef unsigned char find_length(unsigned char precision):
     """Find Decimal lens."""
 
-    if precission not in range(1, 77):
-        raise ValueError("precission must be in [1:76] range!")
-    if precission <= 9:
+    if precision not in range(1, 77):
+        raise ValueError("precision must be in [1:76] range!")
+    if precision <= 9:
         return 4
-    if precission <= 18:
+    if precision <= 18:
         return 8
-    if precission <= 38:
+    if precision <= 38:
         return 16
     return 32
 
@@ -31,14 +31,14 @@ cdef unsigned char find_length(unsigned char precission):
 cpdef object read_decimal(
     object fileobj,
     object length,
-    unsigned char precission,
+    unsigned char precision,
     unsigned char scale,
     object tzinfo,
     object enumcase,
 ):
     """Read Decimal(P, S) from Native Format."""
 
-    cdef unsigned char decimal_length = find_length(precission)
+    cdef unsigned char decimal_length = find_length(precision)
     cdef bytes decimal_bytes = fileobj.read(decimal_length)
     cdef object decimal_value = int.from_bytes(decimal_bytes, "little", signed=True)
     cdef long long divider = <long long>pow(10, scale)
@@ -50,14 +50,14 @@ cpdef object read_decimal(
 cpdef bytes write_decimal(
     object dtype_value,
     object length,
-    unsigned char precission,
+    unsigned char precision,
     unsigned char scale,
     object tzinfo,
     object enumcase,
 ):
     """Write Decimal(P, S) into Native Format."""
 
-    cdef unsigned char decimal_length = find_length(precission)
+    cdef unsigned char decimal_length = find_length(precision)
 
     if dtype_value is None:
         return bytes(decimal_length)

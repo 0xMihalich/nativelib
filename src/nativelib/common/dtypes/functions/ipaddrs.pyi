@@ -8,7 +8,7 @@ from ipaddress import (
 def read_ipv4(
     fileobj: BufferedReader,
     length: int | None,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -21,7 +21,7 @@ def read_ipv4(
 def write_ipv4(
     dtype_value: IPv4Address,
     length: int | None,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -34,7 +34,7 @@ def write_ipv4(
 def read_ipv6(
     fileobj: BufferedReader,
     length: int | None,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -47,7 +47,7 @@ def read_ipv6(
 def write_ipv6(
     dtype_value: IPv6Address,
     length: int | None,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,

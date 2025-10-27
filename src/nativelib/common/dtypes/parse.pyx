@@ -41,16 +41,16 @@ cdef dict DTYPE_LENGTH = {
 }
 
 
-cdef unsigned char find_decimal_length(char precission):
+cdef unsigned char find_decimal_length(char precision):
     """Find Decimal lens."""
 
-    if precission not in range(1, 77):
-        raise ValueError("precission must be in [1:76] range!")
-    if precission <= 9:
+    if precision not in range(1, 77):
+        raise ValueError("precision must be in [1:76] range!")
+    if precision <= 9:
         return 4
-    if precission <= 18:
+    if precision <= 18:
         return 8
-    if precission <= 38:
+    if precision <= 38:
         return 16
     return 32
 
@@ -85,7 +85,7 @@ cdef tuple from_dtype(
     object is_lowcardinality = False,
     object is_nullable = False,
     object length = None,
-    object precission = None,
+    object precision = None,
     object scale = None,
     object tzinfo = None,
     object enumcase = None,
@@ -119,7 +119,7 @@ cdef tuple from_dtype(
             is_lowcardinality,
             is_nullable,
             length,
-            precission,
+            precision,
             scale,
             tzinfo,
             enumcase,
@@ -129,8 +129,8 @@ cdef tuple from_dtype(
     if parent_dtype == "FixedString":
         length = parse_args(args_dtype)
     elif parent_dtype == "Decimal":
-        precission, scale = parse_args(args_dtype)
-        length = find_decimal_length(precission)
+        precision, scale = parse_args(args_dtype)
+        length = find_decimal_length(precision)
     else:
         length = DTYPE_LENGTH.get(parent_dtype)
 
@@ -138,12 +138,12 @@ cdef tuple from_dtype(
         args = parse_args(args_dtype)
 
         if args.__class__ is tuple:
-            precission, tzinfo = args
+            precision, tzinfo = args
         else:
-            precission = args
+            precision = args
 
     elif parent_dtype == "Time64":
-        precission = parse_args(args_dtype)
+        precision = parse_args(args_dtype)
     elif parent_dtype in ("Enum8", "Enum16"):
         enumcase = parse_enum(args_dtype)
 
@@ -153,7 +153,7 @@ cdef tuple from_dtype(
         is_lowcardinality,
         is_nullable,
         length,
-        precission,
+        precision,
         scale,
         tzinfo,
         enumcase,

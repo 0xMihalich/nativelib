@@ -5,6 +5,7 @@ from datetime import (
     timedelta,
     timezone,
 )
+from decimal import Decimal
 from struct import (
     pack,
     unpack,
@@ -16,6 +17,11 @@ except ImportError:
     from backports.zoneinfo import ZoneInfo
 
 from pandas import Timestamp
+
+from nativelib.common.dtypes.functions.decimals cimport (
+    read_decimal,
+    write_decimal,
+)
 
 
 cdef object DEFAULTDATE = datetime(1970, 1, 1, tzinfo=timezone.utc)
@@ -69,7 +75,7 @@ cdef object pack_datetime(object datetimeobj):
 cpdef object read_date(
     object fileobj,
     object length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     object enumcase,
@@ -84,7 +90,7 @@ cpdef object read_date(
 cpdef bytes write_date(
     object dtype_value,
     object length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     object enumcase,
@@ -106,7 +112,7 @@ cpdef bytes write_date(
 cpdef object read_date32(
     object fileobj,
     object length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     object enumcase,
@@ -121,7 +127,7 @@ cpdef object read_date32(
 cpdef bytes write_date32(
     object dtype_value,
     object length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     object enumcase,
@@ -138,7 +144,7 @@ cpdef bytes write_date32(
 cpdef object read_datetime(
     object fileobj,
     object length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     object enumcase,
@@ -158,7 +164,7 @@ cpdef object read_datetime(
 cpdef bytes write_datetime(
     object dtype_value,
     object length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     object enumcase,
@@ -180,19 +186,19 @@ cpdef bytes write_datetime(
 cpdef object read_datetime64(
     object fileobj,
     object length,
-    unsigned char precission,
+    unsigned char precision,
     object scale,
     object tzinfo,
     object enumcase,
 ):
     """Read DateTime64 from Native Format."""
 
-    if not 0 <= precission <= 9:
-        raise ValueError("precission must be in [0:9] range!")
+    if not 0 <= precision <= 9:
+        raise ValueError("precision must be in [0:9] range!")
 
     cdef bytes seconds_bytes = fileobj.read(8)
     cdef long long seconds = unpack("<q", seconds_bytes)[0]
-    cdef double divider = pow(10, -precission)
+    cdef double divider = pow(10, -precision)
     cdef double total_seconds = seconds * divider
     cdef object time_zone, datetime64 = unpack_datetime(total_seconds)
 
@@ -205,7 +211,7 @@ cpdef object read_datetime64(
 cpdef bytes write_datetime64(
     object dtype_value,
     object length,
-    unsigned char precission,
+    unsigned char precision,
     object scale,
     object tzinfo,
     object enumcase,
@@ -215,11 +221,11 @@ cpdef bytes write_datetime64(
     if dtype_value is None:
         return bytes(8)
 
-    if not 0 <= precission <= 9:
-        raise ValueError("precission must be in [0:9] range!")
+    if not 0 <= precision <= 9:
+        raise ValueError("precision must be in [0:9] range!")
 
     cdef double seconds = pack_datetime(dtype_value)
-    cdef double divider = pow(10, -precission)
+    cdef double divider = pow(10, -precision)
     cdef long long total_seconds = <long long>(seconds // divider)
 
     if total_seconds < 0:
@@ -227,3 +233,127 @@ cpdef bytes write_datetime64(
     if total_seconds > 0xffffffffffffffff:
         return b"\xff\xff\xff\xff\xff\xff\xff\xff"
     return pack("<q", total_seconds)
+
+
+cpdef object read_time(
+    object fileobj,
+    object length,
+    object precision,
+    object scale,
+    object tzinfo,
+    object enumcase,
+):
+    """Read Time from Native Format."""
+
+    cdef bytes seconds_bytes = fileobj.read(4)
+    cdef long total_seconds = unpack("<i", seconds_bytes)[0]
+
+    if total_seconds > 3599999:
+        total_seconds = 3599999
+    elif total_seconds < -3599999:
+        total_seconds = -3599999
+
+    return timedelta(seconds=total_seconds)
+
+
+cpdef bytes write_time(
+    object dtype_value,
+    object length,
+    object precision,
+    object scale,
+    object tzinfo,
+    object enumcase,
+):
+    """Write Time into Native Format."""
+
+    if dtype_value is None:
+        return bytes(4)
+
+    cdef long total_seconds = int(dtype_value.total_seconds())
+
+    if total_seconds > 3599999:
+        total_seconds = 3599999
+    elif total_seconds < -3599999:
+        total_seconds = -3599999
+    
+    return pack("<i", total_seconds)
+
+
+cpdef object read_time64(
+    object fileobj,
+    object length,
+    object precision,
+    object scale,
+    object tzinfo,
+    object enumcase,
+):
+    """Read Time64 from Native Format."""
+
+    cdef object decimal_value = read_decimal(
+        fileobj,
+        length,
+        18,
+        precision,
+        tzinfo,
+        enumcase,
+    )
+    cdef double total_seconds_fractional
+
+    if decimal_value is None:
+        return None
+
+    total_seconds_fractional = float(decimal_value)
+
+    if total_seconds_fractional > 3599999.999999999:
+        total_seconds_fractional = 3599999.999999999
+    elif total_seconds_fractional < -3599999.999999999:
+        total_seconds_fractional = -3599999.999999999
+
+    return timedelta(seconds=total_seconds_fractional)
+
+
+cpdef bytes write_time64(
+    object dtype_value,
+    object length,
+    object precision,
+    object scale,
+    object tzinfo,
+    object enumcase,
+):
+    """Write Time64 into Native Format."""
+
+    if dtype_value is None:
+        return write_decimal(
+            Decimal('0'),
+            length,
+            18,
+            precision,
+            tzinfo,
+            enumcase,
+        )
+
+    cdef double total_seconds_fractional
+    cdef object decimal_value
+
+    if hasattr(dtype_value, 'total_seconds'):
+        total_seconds_fractional = dtype_value.total_seconds()
+    else:
+        total_seconds_fractional = float(dtype_value)
+
+    if total_seconds_fractional > 3599999.999999999:
+        total_seconds_fractional = 3599999.999999999
+    elif total_seconds_fractional < -3599999.999999999:
+        total_seconds_fractional = -3599999.999999999
+
+    decimal_value = Decimal(str(total_seconds_fractional)).quantize(
+        Decimal('1.' + '0' * precision)
+    )
+
+    return write_decimal(
+        decimal_value,
+        length,
+        18,
+        precision,
+        tzinfo,
+        enumcase,
+    )

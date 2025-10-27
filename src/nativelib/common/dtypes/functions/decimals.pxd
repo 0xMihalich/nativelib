@@ -1,7 +1,7 @@
 cpdef object read_decimal(
     object fileobj,
     object length,
-    unsigned char precission,
+    unsigned char precision,
     unsigned char scale,
     object tzinfo,
     object enumcase,
@@ -9,7 +9,7 @@ cpdef object read_decimal(
 cpdef bytes write_decimal(
     object dtype_value,
     object length,
-    unsigned char precission,
+    unsigned char precision,
     unsigned char scale,
     object tzinfo,
     object enumcase,

@@ -13,7 +13,7 @@ class DType:
         dtype: ClickhouseDtype,
         is_nullable: bool,
         length: int | None,
-        precission: int | None,
+        precision: int | None,
         scale: int | None,
         tzinfo: str | None,
         enumcase: dict[int, str] | None,
@@ -26,7 +26,7 @@ class DType:
         self.name: str
         self.is_nullable: bool
         self.length: int | None
-        self.precission: int | None
+        self.precision: int | None
         self.scale: int | None
         self.tzinfo: str | None
         self.enumcase: dict[int, str] | None

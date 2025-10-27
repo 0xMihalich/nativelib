@@ -17,7 +17,7 @@ from io import BufferedReader
 def read_decimal(
     fileobj: BufferedReader,
     length: int | None,
-    precission: int,
+    precision: int,
     scale: int,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -30,7 +30,7 @@ def read_decimal(
 def write_decimal(
     dtype_value: Decimal,
     length: int | None,
-    precission: int,
+    precision: int,
     scale: int,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,

@@ -4,7 +4,7 @@ cdef tuple from_dtype(
     object is_lowcardinality=*,
     object is_nullable=*,
     object length=*,
-    object precission=*,
+    object precision=*,
     object scale=*,
     object tzinfo=*,
     object enumcase=*,

@@ -4,6 +4,7 @@ for simple types in native binary format."""
 from datetime import (
     date,
     datetime as dt,
+    timedelta,
 )
 from enum import Enum
 from ipaddress import (
@@ -31,6 +32,8 @@ from .functions import (
     read_ipv6,
     read_nothing,
     read_string,
+    read_time,
+    read_time64,
     read_uint,
     read_uuid,
     write_bfloat16,
@@ -47,6 +50,8 @@ from .functions import (
     write_ipv6,
     write_nothing,
     write_string,
+    write_time,
+    write_time64,
     write_uint,
     write_uuid,
 )
@@ -87,6 +92,8 @@ class ClickhouseDtype(DTypeFunc, Enum):
     Nothing = DTypeFunc("Nothing", NoneType, read_nothing, write_nothing)
     Nullable = DTypeFunc("Nullable", bool, read_bool, write_bool)
     String = DTypeFunc("String", str, read_string, write_string)
+    Time = DTypeFunc("Time", timedelta, read_time, write_time)
+    Time64 = DTypeFunc("Time64", timedelta, read_time64, write_time64)
     UInt128 = DTypeFunc("UInt128", int, read_uint, write_uint)
     UInt16 = DTypeFunc("UInt16", int, read_uint, write_uint)
     UInt256 = DTypeFunc("UInt256", int, read_uint, write_uint)

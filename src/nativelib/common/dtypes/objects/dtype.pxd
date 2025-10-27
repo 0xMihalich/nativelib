@@ -5,7 +5,7 @@ cdef class DType:
     cdef public str name
     cdef public object is_nullable
     cdef public object length
-    cdef public object precission
+    cdef public object precision
     cdef public object scale
     cdef public object tzinfo
     cdef public object enumcase

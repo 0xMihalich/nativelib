@@ -7,7 +7,7 @@ from nativelib.common.length cimport (
 cpdef str read_string(
     object fileobj,
     object length = None,
-    object precission = None,
+    object precision = None,
     object scale = None,
     object tzinfo = None,
     object enumcase = None,
@@ -31,7 +31,7 @@ cpdef str read_string(
 cpdef bytes write_string(
     object dtype_value,
     object length = None,
-    object precission = None,
+    object precision = None,
     object scale = None,
     object tzinfo = None,
     object enumcase = None,

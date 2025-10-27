@@ -4,7 +4,7 @@ from io import BufferedReader
 def read_string(
     fileobj: BufferedReader,
     length: int | None = None,
-    precission: int | None = None,
+    precision: int | None = None,
     scale: int | None = None,
     tzinfo: str | None = None,
     enumcase: dict[int, str] | None = None,
@@ -17,7 +17,7 @@ def read_string(
 def write_string(
     dtype_value: str,
     length: int | None = None,
-    precission: int | None = None,
+    precision: int | None = None,
     scale: int | None = None,
     tzinfo: str | None = None,
     enumcase: dict[int, str] | None = None,

@@ -4,7 +4,7 @@ from io import BufferedReader
 def read_int(
     fileobj: BufferedReader,
     length: int,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -17,7 +17,7 @@ def read_int(
 def write_int(
     dtype_value: int,
     length: int,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -30,7 +30,7 @@ def write_int(
 def read_uint(
     fileobj: BufferedReader,
     length: int,
-    precission: int | None = None,
+    precision: int | None = None,
     scale: int | None = None,
     tzinfo: str | None = None,
     enumcase: dict[int, str] | None = None,
@@ -43,7 +43,7 @@ def read_uint(
 def write_uint(
     dtype_value: int,
     length: int,
-    precission: int | None = None,
+    precision: int | None = None,
     scale: int | None = None,
     tzinfo: str | None = None,
     enumcase: dict[int, str] | None = None,

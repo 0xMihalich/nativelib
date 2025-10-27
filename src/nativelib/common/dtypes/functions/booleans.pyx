@@ -7,7 +7,7 @@ from struct import (
 cpdef object read_bool(
     object fileobj,
     object length = None,
-    object precission = None,
+    object precision = None,
     object scale = None,
     object tzinfo = None,
     object enumcase = None,
@@ -21,7 +21,7 @@ cpdef object read_bool(
 cpdef bytes write_bool(
     object dtype_value,
     object length = None,
-    object precission = None,
+    object precision = None,
     object scale = None,
     object tzinfo = None,
     object enumcase = None,
@@ -37,7 +37,7 @@ cpdef bytes write_bool(
 cpdef object read_nothing(
     object fileobj,
     object length = None,
-    object precission = None,
+    object precision = None,
     object scale = None,
     object tzinfo = None,
     object enumcase = None,
@@ -50,7 +50,7 @@ cpdef object read_nothing(
 cpdef bytes write_nothing(
     object dtype_value = None,
     object length = None,
-    object precission = None,
+    object precision = None,
     object scale = None,
     object tzinfo = None,
     object enumcase = None,

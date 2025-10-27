@@ -14,7 +14,7 @@ cdef class DType:
         object dtype,
         object is_nullable,
         object length,
-        object precission,
+        object precision,
         object scale,
         object tzinfo,
         object enumcase,
@@ -27,7 +27,7 @@ cdef class DType:
         self.name = dtype.name
         self.is_nullable = is_nullable
         self.length = length
-        self.precission = precission
+        self.precision = precision
         self.scale = scale
         self.tzinfo = tzinfo
         self.enumcase = enumcase
@@ -52,7 +52,7 @@ cdef class DType:
         dtype_value = self.dtype.read(
             self.fileobj,
             self.length,
-            self.precission,
+            self.precision,
             self.scale,
             self.tzinfo,
             self.enumcase,
@@ -75,7 +75,7 @@ cdef class DType:
         obj_value = self.dtype.write(
             dtype_value,
             self.length,
-            self.precission,
+            self.precision,
             self.scale,
             self.tzinfo,
             self.enumcase,

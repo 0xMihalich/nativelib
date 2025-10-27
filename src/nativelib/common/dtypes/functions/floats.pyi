@@ -4,7 +4,7 @@ from io import BufferedReader
 def read_bfloat16(
     fileobj: BufferedReader,
     length: int,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -17,7 +17,7 @@ def read_bfloat16(
 def write_bfloat16(
     dtype_value: float,
     length: int,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -30,7 +30,7 @@ def write_bfloat16(
 def read_float(
     fileobj: BufferedReader,
     length: int,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,
@@ -43,7 +43,7 @@ def read_float(
 def write_float(
     dtype_value: float,
     length: int,
-    precission: int | None,
+    precision: int | None,
     scale: int | None,
     tzinfo: str | None,
     enumcase: dict[int, str] | None,

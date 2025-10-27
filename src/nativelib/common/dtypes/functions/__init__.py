@@ -12,10 +12,14 @@ from .dates import (
     read_date32,
     read_datetime,
     read_datetime64,
+    read_time,
+    read_time64,
     write_date,
     write_date32,
     write_datetime,
     write_datetime64,
+    write_time,
+    write_time64,
 )
 from .decimals import (
     read_decimal,
@@ -68,6 +72,8 @@ __all__ = (
     "read_ipv6",
     "read_nothing",
     "read_string",
+    "read_time",
+    "read_time64",
     "read_uint",
     "read_uuid",
     "write_bfloat16",
@@ -84,6 +90,8 @@ __all__ = (
     "write_ipv6",
     "write_nothing",
     "write_string",
+    "write_time",
+    "write_time64",
     "write_uint",
     "write_uuid",
 )

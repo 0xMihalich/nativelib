@@ -28,7 +28,7 @@ class ColumnInfo:
         self.is_lowcardinality: bool
         self.is_nullable: bool
         self.length: int | None
-        self.precission: int | None
+        self.precision: int | None
         self.scale: int | None
         self.tzinfo: str | None
         self.enumcase: dict[int, str] | None

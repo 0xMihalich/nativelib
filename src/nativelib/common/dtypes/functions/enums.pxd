@@ -1,7 +1,7 @@
 cpdef str read_enum(
     object fileobj,
     int length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     dict enumcase,
@@ -9,7 +9,7 @@ cpdef str read_enum(
 cpdef bytes write_enum(
     object dtype_value,
     int length,
-    object precission,
+    object precision,
     object scale,
     object tzinfo,
     dict enumcase,
