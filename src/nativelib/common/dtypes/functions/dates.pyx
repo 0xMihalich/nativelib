@@ -2,6 +2,7 @@ from libc.math cimport pow
 from datetime import (
     date,
     datetime,
+    time,
     timedelta,
     timezone,
 )
@@ -269,7 +270,20 @@ cpdef bytes write_time(
     if dtype_value is None:
         return bytes(4)
 
-    cdef long total_seconds = int(dtype_value.total_seconds())
+    cdef long total_seconds
+
+    if dtype_value.__class__ is timedelta:
+        total_seconds = int(dtype_value.total_seconds())
+    elif dtype_value.__class__ is time:
+        total_seconds = (
+            dtype_value.hour * 3600 +
+            dtype_value.minute * 60 +
+            dtype_value.second
+        )
+    else:
+        raise ValueError(
+            "dtype_value must be datetime.time or datetime.timedelta"
+        )
 
     if total_seconds > 3599999:
         total_seconds = 3599999
@@ -335,10 +349,19 @@ cpdef bytes write_time64(
     cdef double total_seconds_fractional
     cdef object decimal_value
 
-    if hasattr(dtype_value, 'total_seconds'):
+    if dtype_value.__class__ is timedelta:
         total_seconds_fractional = dtype_value.total_seconds()
+    elif dtype_value.__class__ is time:
+        total_seconds_fractional = (
+            dtype_value.hour * 3600 +
+            dtype_value.minute * 60 +
+            dtype_value.second +
+            dtype_value.microsecond / 1_000_000
+        )
     else:
-        total_seconds_fractional = float(dtype_value)
+        raise ValueError(
+            "dtype_value must be datetime.time or datetime.timedelta"
+        )
 
     if total_seconds_fractional > 3599999.999999999:
         total_seconds_fractional = 3599999.999999999

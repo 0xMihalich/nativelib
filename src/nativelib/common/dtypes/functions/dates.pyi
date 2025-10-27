@@ -1,6 +1,7 @@
 from datetime import (
     date,
     datetime,
+    time,
     timedelta,
 )
 from io import BufferedReader
@@ -126,7 +127,7 @@ def read_time(
 
 
 def write_time(
-    dtype_value: timedelta,
+    dtype_value: timedelta | time,
     length: int | None,
     precision: int | None,
     scale: int | None,
@@ -152,7 +153,7 @@ def read_time64(
 
 
 def write_time64(
-    dtype_value: timedelta,
+    dtype_value: timedelta | time,
     length: int | None,
     precision: int | None,
     scale: int | None,

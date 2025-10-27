@@ -1,5 +1,10 @@
 # Version History
 
+## 0.2.2.1
+
+* Improve functions write_time and write_time64
+for support write from datetime.time object
+
 ## 0.2.2.0
 
 * Add Time function
