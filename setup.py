@@ -113,6 +113,6 @@ setup(
         "nativelib": ["**/*.c"],
     },
     include_package_data=True,
-    setup_requires=["Cython>=3.0"],
+    setup_requires=["Cython==0.29.33"],
     zip_safe=False,
 )

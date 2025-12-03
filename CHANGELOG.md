@@ -1,5 +1,9 @@
 # Version History
 
+## 0.2.2.3
+
+* Downgrade compile depends to setuptools<70 & cython==0.29.33
+
 ## 0.2.2.2
 
 * Dellocate memory for unix systems
