@@ -2,7 +2,8 @@
 
 ## 0.2.2.3
 
-* Downgrade compile depends to setuptools<70 & cython==0.29.33
+* Downgrade compile depends to cython==0.29.33
+* Make wheels for python 3.10 and 3.11 only
 
 ## 0.2.2.2
 
