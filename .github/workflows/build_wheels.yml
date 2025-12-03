@@ -28,7 +28,7 @@ jobs:
     - name: Install ONLY cibuildwheel dependencies
       run: |
         python -m pip install --upgrade pip
-        pip install cython==0.29.33 setuptools<70 wheel
+        pip install cython==0.29.33 setuptools wheel
       shell: bash
 
     - name: Build Linux x86_64 wheels
@@ -63,7 +63,7 @@ jobs:
   #   - name: Install ONLY cibuildwheel dependencies
   #     run: |
   #       python -m pip install --upgrade pip
-  #       pip install cython==0.29.33 setuptools<70 wheel
+  #       pip install cython==0.29.33 setuptools wheel
   #     shell: bash
 
   #   - name: Set up QEMU for ARM emulation
