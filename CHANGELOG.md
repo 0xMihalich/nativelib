@@ -1,5 +1,13 @@
 # Version History
 
+## 0.2.2.2
+
+* Dellocate memory for unix systems
+* Disable Linux Aarch64
+* Refactor Array
+* Refactor DType
+* Refactor LowCardinality
+
 ## 0.2.2.1
 
 * Improve functions write_time and write_time64

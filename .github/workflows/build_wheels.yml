@@ -44,45 +44,45 @@ jobs:
         name: linux-x86_64-wheels
         path: wheel_prebuild/*.whl
 
-  build_linux_aarch64:
-    name: Build Linux aarch64 wheels
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
+  # build_linux_aarch64:
+  #   name: Build Linux aarch64 wheels
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #   - uses: actions/checkout@v4
+  #     with:
+  #       submodules: true
 
-    - name: Set up Python
-      uses: actions/setup-python@v4
-      with:
-        python-version: '3.11'
+  #   - name: Set up Python
+  #     uses: actions/setup-python@v4
+  #     with:
+  #       python-version: '3.11'
 
-    - name: Install cibuildwheel
-      run: pip install cibuildwheel
+  #   - name: Install cibuildwheel
+  #     run: pip install cibuildwheel
 
-    - name: Install ONLY cibuildwheel dependencies
-      run: |
-        python -m pip install --upgrade pip
-        pip install cython setuptools wheel
-      shell: bash
+  #   - name: Install ONLY cibuildwheel dependencies
+  #     run: |
+  #       python -m pip install --upgrade pip
+  #       pip install cython setuptools wheel
+  #     shell: bash
 
-    - name: Set up QEMU for ARM emulation
-      uses: docker/setup-qemu-action@v3
-      with:
-        platforms: arm64
+  #   - name: Set up QEMU for ARM emulation
+  #     uses: docker/setup-qemu-action@v3
+  #     with:
+  #       platforms: arm64
 
-    - name: Build Linux aarch64 wheels
-      run: python -m cibuildwheel --output-dir wheel_prebuild --platform linux
-      env:
-        CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-* cp314-*"
-        CIBW_ARCHS_LINUX: "aarch64"
-        CIBW_SKIP: "*-musllinux*"
+  #   - name: Build Linux aarch64 wheels
+  #     run: python -m cibuildwheel --output-dir wheel_prebuild --platform linux
+  #     env:
+  #       CIBW_BUILD: "cp310-* cp311-* cp312-* cp313-* cp314-*"
+  #       CIBW_ARCHS_LINUX: "aarch64"
+  #       CIBW_SKIP: "*-musllinux*"
 
-    - name: Upload Linux aarch64 wheels
-      uses: actions/upload-artifact@v4
-      with:
-        name: linux-aarch64-wheels
-        path: wheel_prebuild/*.whl
+  #   - name: Upload Linux aarch64 wheels
+  #     uses: actions/upload-artifact@v4
+  #     with:
+  #       name: linux-aarch64-wheels
+  #       path: wheel_prebuild/*.whl
 
   build_windows:
     name: Build Windows wheels
@@ -145,7 +145,8 @@ jobs:
   create_release:
     name: Create Release with wheels
     runs-on: ubuntu-latest
-    needs: [build_linux_x86_64, build_linux_aarch64, build_windows, build_macos]
+    # needs: [build_linux_x86_64, build_linux_aarch64, build_windows, build_macos]
+    needs: [build_linux_x86_64, build_windows, build_macos]
     if: startsWith(github.ref, 'refs/tags/')
     
     steps:
@@ -167,7 +168,8 @@ jobs:
 
   upload_pypi:
     name: Upload to PyPI
-    needs: [build_linux_x86_64, build_linux_aarch64, build_windows, build_macos]
+    # needs: [build_linux_x86_64, build_linux_aarch64, build_windows, build_macos]
+    needs: [build_linux_x86_64, build_windows, build_macos]
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/')
     steps:

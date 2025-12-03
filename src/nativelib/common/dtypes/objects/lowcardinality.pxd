@@ -18,3 +18,4 @@ cdef class LowCardinality:
     cpdef unsigned long long write(self, object dtype_value)
     cpdef unsigned long long tell(self)
     cpdef bytes clear(self)
+    cdef void _cleanup(self)
