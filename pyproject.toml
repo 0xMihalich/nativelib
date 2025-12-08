@@ -1,13 +1,13 @@
 [build-system]
-requires = ["setuptools", "wheel", "cython==0.29.33"]
+requires = ["setuptools", "wheel", "cython>=0.29.33"]
 build-backend = "setuptools.build_meta"
 
 [project]
 name = "nativelib"
-version = "0.2.2.3"
+version = "0.2.2.4"
 description = "Library for read and write clickhouse native format."
 readme = "README.md"
-requires-python = ">=3.8"
+requires-python = ">=3.10"
 license = {file = "LICENSE"}
 authors = [
     {name = "0xMihalich", email = "bayanmobile87@gmail.com"},
@@ -17,6 +17,9 @@ classifiers = [
     "Intended Audience :: Developers",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
 ]
 dependencies = [
     "backports.zoneinfo==0.2.1; python_version < '3.9'",

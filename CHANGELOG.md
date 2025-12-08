@@ -1,5 +1,10 @@
 # Version History
 
+## 0.2.2.4
+
+* Back compile depends to cython>=0.29.33
+* Make wheels for python 3.10-3.14
+
 ## 0.2.2.3
 
 * Downgrade compile depends to cython==0.29.33
