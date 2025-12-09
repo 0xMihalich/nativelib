@@ -24,6 +24,7 @@ class DType:
         self.fileobj: BufferedReader
         self.dtype: ClickhouseDtype
         self.name: str
+        self.is_float: int
         self.is_nullable: bool
         self.length: int | None
         self.precision: int | None

@@ -50,6 +50,7 @@ class LowCardinality:
         self.fileobj: BufferedReader
         self.dtype: DType
         self.name: str
+        self.is_float: int
         self.is_nullable: bool
         self.total_rows: int
         self.dictionary: list[Any]

@@ -1,5 +1,13 @@
 # Version History
 
+## 0.2.2.5
+
+* Rollback Array
+* Rollback DType
+* Rollback LowCardinality
+* Autoconvert NaN to None for not Float data types
+* Fix compile from source on unix systems
+
 ## 0.2.2.4
 
 * Back compile depends to cython>=0.29.33

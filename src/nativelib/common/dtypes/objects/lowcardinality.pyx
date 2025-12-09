@@ -84,8 +84,8 @@ cdef unsigned char find_index_size(unsigned long long total_rows):
 cdef unsigned char size_from_header(object fileobj):
     """Get index size from header."""
 
-    cdef bytes binary = fileobj.read(16)
-    cdef unsigned char index = binary[8]
+    cdef bytes bynary = fileobj.read(16)
+    cdef unsigned char index = bynary[8]
     return INDEX_SIZE[index]
 
 
@@ -121,23 +121,22 @@ cdef class LowCardinality:
         self.fileobj = fileobj
         self.dtype = dtype
         self.name = f"LowCardinality({dtype.name})"
+        self.is_float = int("Float" in dtype.name)
         self.is_nullable = is_nullable
         self.total_rows = total_rows
         self.dictionary = []
         self.index_elements = []
         self.index_size = 0
-        self.default_value = DEFAULT_VALUE[self.dtype.name]
+        self.defaul_value = DEFAULT_VALUE[self.dtype.name]
         self.dtype.is_nullable = False
         self.size = 0
-        self._read_header = False
 
     cdef void __index_size(self):
         """Get index_size."""
 
-        if not self._read_header:
+        if not self.index_size:
             self.index_size = size_from_header(self.fileobj)
             self.dtype.total_rows = r_uint(self.fileobj, 8)
-            self._read_header = True
 
     cdef void __update_index_size(self):
         """Update index_size."""
@@ -151,14 +150,13 @@ cdef class LowCardinality:
         self.dtype.skip()
         self.total_rows = r_uint(self.fileobj, 8)
         self.fileobj.read(self.index_size * self.total_rows)
-        self._read_header = False
 
     cpdef list read(self):
         """Read lowcardinality values from native column."""
 
         cdef object dtype_value
         cdef list dtype_values = []
-        cdef int i
+        cdef int _i
         cdef unsigned long long row_index
 
         self.__index_size()
@@ -169,19 +167,19 @@ cdef class LowCardinality:
 
         self.total_rows = r_uint(self.fileobj, 8)
 
-        for i in range(self.total_rows):
+        for _i in range(self.total_rows):
             row_index = r_uint(self.fileobj, self.index_size)
             dtype_values.append(self.dictionary[row_index])
 
-        self.dictionary.clear()
-        self._read_header = False
         return dtype_values
 
     cpdef unsigned long long write(self, object dtype_value):
         """Write lowcardinality values into native column."""
 
-        cdef unsigned long long old_size, new_size
-        cdef int dict_index
+        cdef unsigned long long size
+
+        if self.is_float == 0 and dtype_value != dtype_value:
+            dtype_value = None
 
         if not self.total_rows:
             self.dictionary.clear()
@@ -195,14 +193,14 @@ cdef class LowCardinality:
                 self.size += self.dtype.write(None)
                 self.dictionary.append(None)
 
-            self.size += self.dtype.write(self.default_value)
-            self.dictionary.append(self.default_value)
-            old_size = 0
+            self.size += self.dtype.write(None)
+            self.dictionary.append(self.defaul_value)
+            size = 0
         else:
-            old_size = self.index_size * self.total_rows + self.size
+            size = self.index_size * self.total_rows + self.size
 
         if not self.is_nullable and dtype_value is None:
-            dtype_value = self.default_value
+            dtype_value = self.defaul_value
 
         if self.dtype.name == FIXEDSTRING:
             dtype_value = dtype_value[:self.dtype.length]
@@ -214,15 +212,14 @@ cdef class LowCardinality:
             self.dictionary.append(dtype_value)
             self.size += self.dtype.write(dtype_value)
 
-        self.index_size = find_index_size(len(self.dictionary))
-        new_size = self.index_size * self.total_rows + self.size
-        return new_size - old_size
+        self.index_size = find_index_size(self.total_rows)
+        return self.index_size * self.total_rows + self.size - size
 
     cpdef unsigned long long tell(self):
         """Return size of write values."""
 
         self.__update_index_size()
-        return self.index_size * self.total_rows + self.dtype.tell() + 32
+        return self.index_size * self.total_rows + self.dtype.pos + 32
 
     cpdef bytes clear(self):
         """Get column data and clean buffers."""
@@ -230,56 +227,38 @@ cdef class LowCardinality:
         cdef list buffer_bytes = []
         cdef bytes buffer_element
         cdef object dict_element, index_element
-        cdef int dict_index
-        cdef list sorted_dict
 
         self.__update_index_size()
+
         buffer_element = generate_header(self.index_size)
         buffer_bytes.append(buffer_element)
+
+        self.dtype.clear()
+        self.dictionary = [self.dictionary[0], *sorted(self.dictionary[1:])]
+
         buffer_element = w_uint(len(self.dictionary), 8)
         buffer_bytes.append(buffer_element)
 
-        if self.is_nullable and self.dictionary:
-            none_element = self.dictionary[0]
-            sorted_dict = [none_element] + sorted(self.dictionary[1:])
-        else:
-            sorted_dict = sorted(self.dictionary)
-
-        for dict_element in sorted_dict:
+        for dict_element in self.dictionary:
             self.dtype.write(dict_element)
 
         buffer_element = self.dtype.clear()
         buffer_bytes.append(buffer_element)
+
         buffer_element = w_uint(self.total_rows, 8)
         buffer_bytes.append(buffer_element)
 
         for index_element in self.index_elements:
-            dict_index = sorted_dict.index(index_element)
-            buffer_element = w_uint(dict_index, self.index_size)
+            buffer_element = w_uint(
+                self.dictionary.index(index_element),
+                self.index_size,
+            )
             buffer_bytes.append(buffer_element)
 
-        self._cleanup()
-        return b"".join(buffer_bytes)
-
-    cdef void _cleanup(self):
-        """Cleaning of internal structures."""
-
-        if self.dictionary is not None:
-            self.dictionary.clear()
-
-        if self.index_elements is not None:
-            self.index_elements.clear()
-
-        if self.dtype is not None:
-            self.dtype.clear()
-
+        self.dictionary.clear()
+        self.index_elements.clear()
         self.total_rows = 0
         self.dtype.total_rows = 0
         self.index_size = 1
         self.size = 0
-        self._read_header = False
-
-    def __dealloc__(self):
-        """Destructor for clearing memory."""
-
-        self._cleanup()
+        return b"".join(buffer_bytes)

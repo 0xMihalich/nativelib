@@ -25,6 +25,7 @@ cdef class DType:
         self.fileobj = fileobj
         self.dtype = dtype
         self.name = dtype.name
+        self.is_float = int("Float" in self.name)
         self.is_nullable = is_nullable
         self.length = length
         self.precision = precision
@@ -66,6 +67,9 @@ cdef class DType:
         """Write dtype value into native column."""
 
         cdef bytes obj_value
+
+        if self.is_float == 0 and dtype_value != dtype_value:
+            dtype_value = None
 
         if self.is_nullable:
             obj_value = write_bool(dtype_value is None)
@@ -127,26 +131,10 @@ cdef class DType:
         """Get column data and clean buffers."""
 
         cdef bytes data_bytes
-
         self.nullable_buffer.extend(self.writable_buffer)
         data_bytes = b"".join(self.nullable_buffer)
         self.nullable_buffer.clear()
         self.writable_buffer.clear()
-
-        del self.nullable_map[:]
         self.total_rows = 0
         self.pos = 0
-
         return data_bytes
-
-    def __dealloc__(self):
-        """Destructor for clearing memory."""
-
-        if self.nullable_map is not None:
-            self.nullable_map.clear()
-
-        if self.nullable_buffer is not None:
-            self.nullable_buffer.clear()
-
-        if self.writable_buffer is not None:
-            self.writable_buffer.clear()

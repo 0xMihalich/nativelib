@@ -3,6 +3,7 @@ cdef class Array:
     cdef public object fileobj
     cdef public object dtype
     cdef public str name
+    cdef public short is_float
     cdef public unsigned long long total_rows
     cdef public list row_elements
     cdef public list writable_buffer

@@ -3,6 +3,7 @@ cdef class LowCardinality:
     cdef public object fileobj
     cdef public object dtype
     cdef public str name
+    cdef public short is_float
     cdef public object is_nullable
     cdef public unsigned long long total_rows
     cdef public list dictionary
@@ -18,4 +19,3 @@ cdef class LowCardinality:
     cpdef unsigned long long write(self, object dtype_value)
     cpdef unsigned long long tell(self)
     cpdef bytes clear(self)
-    cdef void _cleanup(self)

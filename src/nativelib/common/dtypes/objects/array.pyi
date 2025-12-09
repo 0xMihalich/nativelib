@@ -18,6 +18,7 @@ class Array:
         self.fileobj: BufferedReader
         self.dtype: DType | Array
         self.name: str
+        self.is_float: int
         self.total_rows: int
         self.row_elements: list
         self.writable_buffer: list
