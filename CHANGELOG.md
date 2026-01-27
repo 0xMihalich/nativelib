@@ -1,5 +1,11 @@
 # Version History
 
+## 0.2.2.6
+
+* Change documentation link
+* Change project development status to 4 - Beta
+* No any changes, docs only
+
 ## 0.2.2.5
 
 * Rollback Array
